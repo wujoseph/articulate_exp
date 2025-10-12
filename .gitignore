@@ -1,0 +1,9 @@
+*.obj
+*.mtl
+*.json
+*.urdf
+*.png
+*.jpg
+*.txt
+
+/data/*
