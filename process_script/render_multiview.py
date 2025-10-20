@@ -5,6 +5,20 @@ import random
 import os
 import mathutils
 
+
+"""
+command format:
+dont need any conda environment
+cd to current directory
+
+blender --background --python render_multiview.py -- input_path output_dir
+
+where input_path is the directory you store the .obj file
+output_dir is the place you store multiview
+
+"""
+
+
 argv = sys.argv
 argv = argv[argv.index("--") + 1:]
 input_path = argv[0]
@@ -46,15 +60,43 @@ camera = bpy.context.object
 bpy.context.scene.camera = camera
 
 # Add light
+"""
 bpy.ops.object.light_add(type='SUN', location=(0, 0, 10))
 sun = bpy.context.object
 sun.data.energy = 20
 
-bpy.ops.object.light_add(type='AREA', location=(0, 0, 5))
-area_light = bpy.context.object
-area_light.data.energy = 500  # increase for brightness
-area_light.data.size = 10     # large size for softness
+bpy.ops.object.light_add(type='SUN', location=(0, 10, 0))
+sun = bpy.context.object
+sun.data.energy = 20
+"""
 
+
+bpy.ops.object.light_add(type='AREA', location=(0, 0, 10))
+area_light = bpy.context.object
+area_light.data.energy = 5000  # increase for brightness
+area_light.data.size = 30     # large size for softness
+
+
+
+
+# set back ground to black
+bpy.context.scene.world.use_nodes = True
+bg = bpy.context.scene.world.node_tree.nodes['Background']
+bg.inputs[0].default_value = (0, 0, 0, 1)  # RGBA for black
+# but not much of strength
+bg.inputs[1].default_value = 0  # strength
+
+
+"""
+
+# set back ground to white
+bpy.context.scene.world.use_nodes = True
+bg = bpy.context.scene.world.node_tree.nodes['Background']
+bg.inputs[0].default_value = (1, 1, 1, 1)  # RGBA for black
+# but not much of strength
+bg.inputs[1].default_value = 0.1  # strength
+
+"""
 # Rendering settings
 bpy.context.scene.render.resolution_x = 512
 bpy.context.scene.render.resolution_y = 512
