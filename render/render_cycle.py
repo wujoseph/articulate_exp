@@ -97,6 +97,14 @@ def create_camera_only_material(name="CameraOnlyMat", color=(0.8, 0.8, 0.8, 1.0)
 # Start script actions
 # ---------------------
 
+bpy.context.scene.render.engine = 'CYCLES'
+bpy.context.scene.cycles.device = 'GPU'
+# For newer Blender versions, also set device preferences
+prefs = bpy.context.preferences.addons['cycles'].preferences
+prefs.compute_device_type = 'CUDA'  # Or 'OPTIX' for RTX cards
+prefs.get_devices()
+bpy.context.scene.cycles.device = 'GPU'
+
 # Remove default objects (clear scene)
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
