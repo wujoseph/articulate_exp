@@ -1,0 +1,28 @@
+[project]
+name = "exp1_DGCNN"
+version = "0.1.0"
+description = "Environment for pairwise joint preprocessing and training"
+channels = ["nvidia", "pytorch", "conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+python = "==3.10"
+numpy = "==1.26.4"
+plyfile = "==0.8.1"
+pytorch = "==2.4.1"
+
+[feature.cuda.dependencies]
+# Enable CUDA builds of PyTorch when using the 'cuda' environment
+pytorch-cuda = "==12.1"
+
+[environments]
+# Default CPU environment
+default = { features = [] }
+# CUDA-enabled environment (requires compatible GPU/driver)
+cuda = { features = ["cuda"] }
+
+[tasks]
+# Show preprocess script usage
+preprocess = "python projects/articulate_exp/exp1_DGCNN/preprocess_pairs.py --help"
+# Show training script usage
+train = "python projects/articulate_exp/exp1_DGCNN/training.py --help"
