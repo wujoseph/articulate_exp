@@ -4,7 +4,10 @@ import math
 import random
 import os
 import mathutils
-import json
+
+# Add the lib directory to the path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
+from dataset_utils import get_dataset_dict
 
 """
 command format:
@@ -18,29 +21,6 @@ output_dir is the place you store multiview images
 argv = sys.argv
 argv = argv[argv.index("--") + 1:]
 class_name = argv[0]
-
-def get_dataset_dict():
-    path = '/work/u9497859/shared_data/partnet-mobility-v0/dataset/'
-    folders = [name for name in os.listdir(path)
-           if os.path.isdir(os.path.join(path, name))]
-
-    id_dict = {}
-    for item in folders:
-        # find the class of this 
-        with open(f'/work/u9497859/shared_data/partnet-mobility-v0/dataset/{item}/meta.json', 'r', encoding='utf-8') as f:
-            # 使用 json.load() 將檔案內容解析成 Python 字典
-            data = json.load(f)
-
-        _class = data['model_cat']
-
-        if _class in id_dict:
-            id_dict[_class].append(item)
-        else:
-            id_dict[_class] = [item]
-
-    for cls in id_dict.keys():
-        id_dict[cls].sort()
-    return id_dict
 
 # --- Helper: disable denoising / compositor to avoid OIDN errors ---
 def disable_denoising_and_compositor(scene):

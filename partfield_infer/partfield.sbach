@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+#SBATCH --account=MST114029
+#SBATCH --partition=gp1d
+#SBATCH --job-name=gpu_render_job
+#SBATCH --output=logs/gpu_output_%j.out
+#SBATCH --error=logs/gpu_error_%j.err
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=4
+#SBATCH --gpus-per-node=1 
+#SBATCH --time=1:00:00
+#SBATCH --mem=40G
+#SBATCH --mail-user=wujoseph12345@gmail.com
+#SBATCH --mail-type=ALL
+
+
+# execute this under arcitulate_exp/partfield_infer
+
+# to increase the speed of inference, we'll inference at batch
+# assume you have collect all input file (.ply) under one directory, and have it's id as it's filename
+# and partfield will inference, output under it's directory, and then we move it to where we need
+
+data_path="/work/u9497859/shared_data/partnet-mobility-pointcloud/Faucet"
+
+source ~/.bashrc 
+cd ../../PartField
+conda activate partfield
+python partfield_inference.py -c configs/final/demo.yaml --opts continue_ckpt model/model_objaverse.ckpt result_name temp dataset.data_path $data_path is_pc True
